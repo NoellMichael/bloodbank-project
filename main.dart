@@ -1,39 +1,83 @@
 import 'package:flutter/material.dart';
-import './login_screen.dart';
 
-void main() => runApp(const LoginUI());
+import 'splash.dart';
 
-class LoginUI extends StatelessWidget {
-  const LoginUI({Key? key}) : super(key: key);
+void main() {
+  runApp(const MyApp());
+}
 
-  /* Future<FirebaseApp> _initializeFirebase() async {
-    FirebaseApp firebaseApp = await FirebaseApp.initializeApp();
-    return firebaseApp;
-  }*/
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // title: "Flutter Login UI",
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 146, 7, 21),
+        primarySwatch: Colors.cyan,
       ),
-      home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 155, 111, 167),
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          centerTitle: true,
-          title: const Text(
-            "Login Screen",
-          ),
-        ),
-        body: const LoginScreen(),
-      ),
+      home: Splash(),
     );
   }
 }
 
-class FirebaseApp {
-  static initializeApp() {}
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
+
+  static final List<Widget> _widgetoptions = <Widget>[
+    const Center(child: Text('home')),
+    const Center(child: Text('search')),
+    const Center(child: Text('alerts')),
+    const Center(child: Text('profile')),
+  ];
+  void _onitemtapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: _widgetoptions[_currentIndex],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        iconSize: 30,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              backgroundColor: Color.fromARGB(255, 33, 243, 219),
+              label: "home"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              backgroundColor: Color.fromARGB(255, 33, 243, 219),
+              label: "search"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notification_add),
+              backgroundColor: Color.fromARGB(255, 33, 243, 219),
+              label: "alerts"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              backgroundColor: Color.fromARGB(255, 33, 243, 219),
+              label: "pro"),
+        ],
+        onTap: _onitemtapped,
+      ),
+    );
+  }
 }
